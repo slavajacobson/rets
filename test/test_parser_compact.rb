@@ -86,6 +86,12 @@ class TestParserCompact < MiniTest::Test
     assert_equal "text with <tag>", rows.last["PublicRemarksNew"]
   end
 
+  def test_parse_html_encoded_chars_3
+    rows = Rets::Parser::Compact.parse_document(SAMPLE_COMPACT_WITH_SPECIAL_CHARS_3)
+
+    assert_equal "text with non utf-8 encoded char &#56324;", rows.last["PublicRemarksNew"]
+  end
+
   def test_parse_property_with_lots_of_columns
     row = Rets::Parser::Compact.parse_document(SAMPLE_PROPERTY_WITH_LOTS_OF_COLUMNS).first
     assert_equal 800, row.keys.size

@@ -76,7 +76,9 @@ module Rets
         end
 
         column_names = columns.split(delimiter)
-        data_values = data.split(delimiter, INCLUDE_NULL_FIELDS).map { |x| CGI.unescapeHTML(x) }
+        data_values = data.split(delimiter, INCLUDE_NULL_FIELDS).map do |x|
+          CGI.unescapeHTML(x.force_encoding("BINARY")).encode("UTF-8", :invalid => :replace, :undef => :replace)
+        end
 
         zipped_key_values = column_names.zip(data_values).map { |k, v| [k.freeze, v.to_s] }
 
